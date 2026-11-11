@@ -49,7 +49,7 @@ public class Player {
         currentStreak++;
     }
     public void recordLoss() {
-        losses--;
+        losses++;
         currentStreak = 0;
         //reset the streak to zero when a player losses
     }
