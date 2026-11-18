@@ -1,4 +1,3 @@
-
 /**
  * This class runs the main loop. It asks the view for input, parses menu choices, calls the
  * model, and catches model exceptions 
@@ -55,15 +54,18 @@ public class TournamentController {
                 view.showStatus();
                 break;
             case 5:
+                handleLeaderboard();
+                break;
+            case 6:
                 handleQuit();
                 break;
             default:
-                view.showError("Please enter a number from 1 to 5");
+                view.showError("Please enter a number from 1 to 6");
         }
     }
     
     public void handleAddPlayer() {
-        while (running) {
+        while (true) {
             String name = view.readLine("Player name: ");
             if (name == null) {    // end of input
                 handleQuit();
@@ -97,6 +99,14 @@ public class TournamentController {
         }
     }
     
+    /**
+     * Shows the leaderboard. Reads model state only, so it never changes the roster,
+     * the queue, the champion, or the match count.
+     */
+    public void handleLeaderboard() {
+        view.showLeaderboard();
+    }
+
     public void handleQuit() {
         running = false;
         view.showSummary();

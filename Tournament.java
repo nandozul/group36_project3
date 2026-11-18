@@ -1,6 +1,6 @@
-
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,6 +122,33 @@ public class Tournament {
         listeners.add(l);
     }
  
+    /**
+     * Returns every registered player ranked by record: most wins first, then fewest
+     * losses, then name in alphabetical order (ignoring case) to break ties.
+     * Works before the tournament starts (everyone is 0-0) and on an empty roster.
+     *
+     * @return an unmodifiable list of read-only player records, best first
+     */
+    public List<PlayerRecord> getLeaderboard() {
+        List<PlayerRecord> board = new ArrayList<PlayerRecord>();
+        for (Player p : roster.values()) {
+            board.add(new PlayerRecord(p));
+        }
+        Collections.sort(board, new Comparator<PlayerRecord>() {
+            @Override
+            public int compare(PlayerRecord a, PlayerRecord b) {
+                if (a.getWins() != b.getWins()) {
+                    return b.getWins() - a.getWins();
+                }
+                if (a.getLosses() != b.getLosses()) {
+                    return a.getLosses() - b.getLosses();
+                }
+                return a.getName().compareToIgnoreCase(b.getName());
+            }
+        });
+        return Collections.unmodifiableList(board);
+    }
+
     Player getPlayer(String name) {
         return roster.get(name.trim().toLowerCase());
     }

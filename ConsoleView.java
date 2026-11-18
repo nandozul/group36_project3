@@ -37,7 +37,8 @@ public class ConsoleView implements TournamentListener {
         System.out.println("2.) Start tournament");
         System.out.println("3.) Play next match");
         System.out.println("4.) Show champion and queue");
-        System.out.println("5.) Quit");
+        System.out.println("5.) Show leaderboard");
+        System.out.println("6.) Quit");
     }
     
     public void showError(String message) {
@@ -76,6 +77,31 @@ public class ConsoleView implements TournamentListener {
         System.out.println("Thanks for playing!");
     }
     
+    /**
+     * Prints every player ranked by wins, with losses and current streak.
+     * The current champion is marked with an asterisk.
+     */
+    public void showLeaderboard() {
+        System.out.println();
+        System.out.println("=== Leaderboard ===");
+        List<PlayerRecord> board = model.getLeaderboard();
+        if (board.isEmpty()) {
+            System.out.println("(no players yet)");
+            return;
+        }
+        String champ = model.getChampion();
+        int rank = 1;
+        for (PlayerRecord r : board) {
+            String mark = r.getName().equals(champ) ? " *" : "";
+            System.out.println(rank + ". " + r.getName() + mark + "  W: " + r.getWins()
+                + "  L: " + r.getLosses() + "  Streak: " + r.getCurrentStreak());
+            rank++;
+        }
+        if (champ != null) {
+            System.out.println("* current champion");
+        }
+    }
+
     //Tournament Listener
     
     @Override

@@ -7,7 +7,7 @@ import student.TestCase;
  * then checking the model's state afterward.
  *
  * @author Fernando Leon
- * @version 2026.11.12
+ * @version 2026.11.18
  */
 public class TournamentControllerTest extends TestCase {
 
@@ -36,7 +36,7 @@ public class TournamentControllerTest extends TestCase {
      * Tests a normal run: add players, start, play two matches, quit.
      */
     public void testNormalRun() {
-        controllerFor("1\nHawkeye\n1\nThor\n1\nIron Man\n2\n3\n3\n5\n").run();
+        controllerFor("1\nHawkeye\n1\nThor\n1\nIron Man\n2\n3\n3\n6\n").run();
 
         assertEquals(3, model.getRosterSize());
         assertTrue(model.isStarted());
@@ -48,7 +48,7 @@ public class TournamentControllerTest extends TestCase {
      * Tests that non-numeric and out-of-range menu choices are ignored.
      */
     public void testBadMenuChoices() {
-        controllerFor("abc\n\n9\n-1\n5\n").run();
+        controllerFor("abc\n\n9\n-1\n6\n").run();
 
         assertEquals(0, model.getRosterSize());
         assertFalse(model.isStarted());
@@ -62,7 +62,7 @@ public class TournamentControllerTest extends TestCase {
         for (int i = 0; i < 51; i++) {
             longName += "A";
         }
-        controllerFor("1\nThor\n1\n   \n" + longName + "\nthor\nLoki\n5\n").run();
+        controllerFor("1\nThor\n1\n   \n" + longName + "\nthor\nLoki\n6\n").run();
 
         assertEquals(2, model.getRosterSize());
         assertEquals("Thor", model.getQueueOrder().get(0));
@@ -73,7 +73,7 @@ public class TournamentControllerTest extends TestCase {
      * Tests that starting with one player and playing before starting are both rejected.
      */
     public void testStartAndPlayErrors() {
-        controllerFor("3\n1\nThor\n2\n3\n5\n").run();
+        controllerFor("3\n1\nThor\n2\n3\n6\n").run();
 
         assertFalse(model.isStarted());
         assertEquals(0, model.getMatchCount());
@@ -83,7 +83,7 @@ public class TournamentControllerTest extends TestCase {
      * Tests that starting twice does not change the champion.
      */
     public void testStartTwice() {
-        controllerFor("1\nThor\n1\nLoki\n2\n2\n5\n").run();
+        controllerFor("1\nThor\n1\nLoki\n2\n2\n6\n").run();
 
         assertTrue(model.isStarted());
         assertEquals("Thor", model.getChampion());
@@ -106,6 +106,47 @@ public class TournamentControllerTest extends TestCase {
         controllerFor("1\n").run();
 
         assertEquals(0, model.getRosterSize());
+    }
+
+    /**
+     * Tests that the leaderboard option is reachable and changes no state.
+     */
+    public void testLeaderboardOption() {
+        controllerFor("1\nThor\n1\nLoki\n2\n3\n5\n6\n").run();
+
+        assertEquals(2, model.getRosterSize());
+        assertEquals(1, model.getMatchCount());
+        assertEquals(1, model.getQueueOrder().size());
+        assertEquals(2, model.getLeaderboard().size());
+    }
+
+    /**
+     * Tests the leaderboard option before anyone has joined.
+     */
+    public void testLeaderboardOptionEmpty() {
+        controllerFor("5\n6\n").run();
+
+        assertEquals(0, model.getRosterSize());
+        assertFalse(model.isStarted());
+    }
+
+    /**
+     * Tests that 6 is now quit and 7 is out of range.
+     */
+    public void testQuitIsSix() {
+        controllerFor("7\n6\n1\nThor\n").run();
+
+        assertEquals(0, model.getRosterSize());
+    }
+
+    /**
+     * Tests that adding a player works when handleChoice is called outside the main loop.
+     */
+    public void testAddPlayerOutsideLoop() {
+        TournamentController controller = controllerFor("Thor\n");
+        controller.handleChoice("1");
+
+        assertEquals(1, model.getRosterSize());
     }
 
     /**
