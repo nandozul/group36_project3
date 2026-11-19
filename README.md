@@ -156,7 +156,7 @@ like "3-time Champion." Stats would change only the winner selection inside
 | Javadoc and style pass; system diagram update | Tanvi |
 | `MatchResultTest` and `PlayerRecordTest` | Zachias |
 | Menu wording and `showMessage` cleanup in the view | Megan |
-| Controller cleanup and demo script run-through | Fernando |
+| Controller cleanup| Fernando |
 
 ## Attribution
 
