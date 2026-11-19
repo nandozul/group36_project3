@@ -169,7 +169,7 @@ like "3-time Champion." Stats would change only the winner selection inside
 | `Tournament.java` | Megan; Fernando | Megan drafted with GenAI assistance; `getLeaderboard()` GenAI-drafted, reviewed by group|
 | `TournamentListener.java` | Megan | Drafted with GenAI assistance; reviewed by group |
 | `ConsoleView.java` | Megan; Fernando Megan drafted with GenAI assistance; `showLeaderboard()` GenAI-drafted, reviewed by Group |
-| `TournamentController.java` | Fernando | Drafted with GenAI assistance; leaderboard case and `handleAddPlayer` fix GenAI-drafted, reviewed by Fernando |
+| `TournamentController.java` | Megan | Drafted with GenAI assistance; leaderboard case and `handleAddPlayer` fix GenAI-drafted, reviewed by Fernando |
 | `Main.java` | Megan | Drafted with GenAI assistance; reviewed by group |
 | `package-info.java` | Megan | Drafted with GenAI assistance; reviewed by group |
 | `PlayerQueueTest.java` | Tanvi | Drafted with GenAI assistance; reviewed by group |
